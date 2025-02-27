@@ -1,8 +1,10 @@
 "use client"
 
+
 import { useState } from 'react';
 import axios from 'axios';
 import { SyncLoader } from 'react-spinners'
+import jsPDF from 'jspdf';
 import FormularioUsuario from '../components/FormularioUsuario';
 import RutinaGenerada from '../components/RutinaGenerada';
 import PlanNutricionalGenerado from '../components/PlanNutricionalGenerado';
@@ -27,6 +29,19 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text('Rutina Generada', 10, 10);
+    ejercicios.forEach((ejercicio, index) => {
+      doc.text(ejercicio, 10, 20 + index * 10);
+    });
+    doc.text('Plan Nutricional Generado', 10, 50 + ejercicios.length * 10);
+    alimentos.forEach((alimento, index) => {
+      doc.text(alimento, 10, 60 + ejercicios.length * 10 + index * 10);
+    });
+    doc.save('rutina_nutricion.pdf');
   };
 
   return (
@@ -59,6 +74,13 @@ export default function Home() {
               <div className="w-full md:w-1/2">
                 <PlanNutricionalGenerado alimentos={alimentos} />
               </div>
+            </div>
+          )}
+          {(ejercicios && alimentos) && (
+            <div className="flex justify-center mt-4">
+              <button onClick={handleDownloadPDF} className="bg-blue-500 text-white p-2 rounded">
+                Descargar PDF
+              </button>
             </div>
           )}
         </div>
