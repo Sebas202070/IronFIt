@@ -40,14 +40,20 @@ export default function Home() {
               <FormularioUsuario onGenerar={handleGenerar} />
             </div>
           </div>
-         
-          
           {loading && (
   <div className="flex flex-col justify-center items-center mt-4"> {/* Cambiar a flex-col */}
     <SyncLoader color="#ffffff" size={15} margin={3} />
     <p className="mt-2 text-white">Generando Rutina...</p> {/* Agregar margen superior */}
   </div>
 )}
+          
+          {ejercicios && (
+            <div className="flex justify-center">
+              <div className="w-full md:w-1/2">
+                <RutinaGenerada ejercicios={ejercicios} />
+              </div>
+            </div>
+          )}
           {alimentos && (
             <div className="flex justify-center">
               <div className="w-full md:w-1/2">
